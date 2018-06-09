@@ -1,0 +1,30 @@
+{% if interface_type == 'normal'  %}
+interface {{interface}}.{{vlan_id}}
+ encapsulation dot1Q {{vlan_id}}
+ {% else %}
+ interface Vlan{{vlan_id}}
+ {% endif %}
+ description {{interface_description}}
+ {% if vrf %}
+ ip vrf forwarding {{vrf}}
+ {% endif %}
+ ip address {{first_ip}} {{mask}}
+ no ip redirects
+ no ip unreachables
+ no ip proxy-arp
+ ip ospf network point-to-point
+ no shutdown
+!
+!
+{% if vrf %}
+ router ospf {{ospf_proc_id}} vrf {{vrf}} 
+{% else %}
+ router ospf {{ospf_proc_id}}
+{% endif %}
+ network {{network_addr}} {{wildcard}} area {{area}}
+ {% if interface_type == 'normal'  %}
+ no passive-interface {{interface}}.{{vlan_id}}
+ {% else %}
+ no passive-interface Vlan{{vlan_id}}
+ {% endif %}
+ area {{area}} stub
