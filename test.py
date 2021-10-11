@@ -22,7 +22,7 @@ env = Environment(loader = FileSystemLoader(template_dir),
                   trim_blocks=True, lstrip_blocks=True)
 
 #  Generating conf files for ned router
-vars_dict = yaml.load(open('data/end/ps167-cgr2010-2'))
+vars_dict = yaml.load(open('data/end/ps1672\'))
 network = vars_dict['network']
 net4 = ipaddress.ip_network(network.decode('utf-8'))
 
@@ -30,7 +30,7 @@ network_key = ['first_ip', 'second_ip', 'network_addr', 'mask', 'wildcard']
 network_value = [net4[1], net4[2], net4.network_address, net4.netmask, net4.hostmask]
 net_param = dict(zip(network_key, network_value))
 template = env.get_template(template_end)
-vars_dict = yaml.load(open('data/end/ps167-cgr2010-2'))
+vars_dict = yaml.load(open('data/end/ps167\'))
 result = template.render(vars_dict, net_param=net_param)
 cnf_end = cnf + "/" + vars_dict["hostname"]
 with open(cnf_end, 'w') as dest:
